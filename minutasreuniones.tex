@@ -1,0 +1,41 @@
+\documentclass[12pt,a4paper,twocolumn]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\begin{document}
+
+\section*{17/04}
+\begin{itemize}
+  \item Time Varying Graphs (TVG): ver formalismos en el paper de Ziviani Wehmuth para ver como es la din\'amica de los grafos y c\'omo cambia la deteccion de las caracter\'isticas de los usuarios a partir del uso de los clusters de antenas.
+
+  \item Un tema tambi\'en podr\'ia ser hacer un ‘survey’ en machine-learning relacionada con age/gender prediction del grafo. Ver porqu\'e no funcionan o c\'omo mejorar estas t\'ecnicas usuales. Y ver si de alguna manera funcionan mejor con un algoritmo m\'as anillado.
+  \item Ver qu\'e propiedades tienen el conjunto de seeds y ver si mejora la predicci\'on ‘homogeneizandolo’ i.e. (tomando subcortes m\'as aleatorios).
+   \item Ver qu\'e pasa en un TVG si aplico el algoritmo de homofilia a un momento con un resultado y despu\'es c\'omo cambia la predicci\'on si agarramos otra ventana de tiempo.
+  \item An\'alisis de movilidad.
+   \item Interfaz de datos: Usario + pwd / conexi\'on por ssh / cctave, python , R o sckikit learn.
+  \item Tips: citar al libro que cita wikipedia y para buscar papers buscar el deseado en google scholar y al lado del ‘cited by’ deber\'ia aparecer el ‘all versions’ como para bajar gratis el pdf. Otra alternativa es buscar directamente en arXiv.
+\end{itemize}
+
+\section*{07/05}
+
+\begin{itemize}
+  \item Fuente vs. densidad: Probaron el algoritmo de las dos maneras y no habr\'ian habido diferencias, tal vez solamente una convergencia m\'as r\'apida.
+  \item Los beneficios de anillar el algoritmo ya est\'an contemplados impl\'icitamente en la propia ecuaci\'on de difusi\'on.
+  \item Se hab\'ia probado el algoritmo con pesos $w_{i,j}$ distintos a uno pero resulto m\'as efectivo y r\'apido considerarlo sin pesos.
+  \item La ecuaci\'on general es:
+  
+  $$g_{x,t} \ = \ (1-\lambda)g_{x,0} \ + \ \frac{\sum_{x\sim y} w_{x,y}*P*g_{x,t-1}}{\sum_{x\sim y} w_{x,y}} $$
+
+  \item Se puede considerar softmax como par\'ametro 'continuo' que en cada paso tome la decisi\'on de, o dejar $g_{x,t} $ como est\'a o, en el otro extremo, tomar la moda de el conjunto de la probabilidad de pertenencia de $g_{x,t}$ a cada una de las clases.
+  \item Estudiar que pasa si va cambiando el conjunto de seeds. Por ejemplo si lo 'homogeinizo' o hago m\'as esparso al restringir el resto del grafo, etc.
+  \item Sci-kit learn: empezar a tocarlo, usar algoritmos usuales en datasets de juguete. Regresiones, redes, Svm, y algoritmos semi-supervisados. Mirar dentro de la documentaci\'on. 
+  \item Mirar el libro de Mackay.
+  \item Armar con Latex un technical report (buscar templates). La idea de esto ser\'ia ir armando un draft de la tesis donde se va ordenando toda la informaci\'on de lo que se lee/busca y se van contando las herramientas que vamos a usar, comentando acerca de qu\'e son, c\'omo funcionan c\'omo se relacionan con el problema, etc.
+  \item Armar un repositorio en github.
+  \item Est\'a el problema: qu\'e t\'ecnicas existen, que hace cada una, ventajas y desventajas \ldots
+  \item Mirar otros papers de la bibliograf\'ia.
+  \item Leer un paper y meterlo en el \textit{technical report}. La idea es pensar hacer algo que podr\'ia entender yo mismo en 20 
+
+\end{itemize}
+\end{document}
