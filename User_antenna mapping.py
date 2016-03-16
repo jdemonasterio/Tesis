@@ -65,20 +65,13 @@ start_time = time.time()
 #hay cinco meses del cual extraer atributos:
 months= ["0"+str(month) for month in range(5,10)]
 
-#tenemos 36 caracteres
-#con esto creo grupos de a n que 'masomenos' van a filtrar la tabla en n_group pedazos
-n_group=1
-
 year = "2015"
 
 #aca seteamos como vamos a partir la tabla segun el nro correspondiente a c/hash y tomando modulo
 passes = 45
 #creo los grupos que despues van a filtrar c/chunk de la tabla para hacer varias pasadas
-gr =0
 for group in range(passes):
-    gr+=1
-    print("working group number {it} of {pas}, time elapsed is {t} \n".format(it=gr,pas=passes, t=(time.time()-start_time))) 
-
+    print("working group number {it} of {pas}, time elapsed is {t} \n".format(it=group,pas=passes, t=(time.time()-start_time)))
 
     #itero sobre los meses
     subgroup = pd.DataFrame()
@@ -90,7 +83,7 @@ for group in range(passes):
         table = pd.read_csv(
                 input_file,
                 engine = 'c',
-                chunksize = 5*10**7,
+                chunksize = 6*10**7,
     #            iterator =True,
                 sep = ' ',
                 header = 0,
@@ -101,119 +94,116 @@ for group in range(passes):
 
         #cuando entramos a este loop, table tiene tantos 'chunks' como el valor entero de la cantidad de lineas en el file
         #dividido el tamanyo del chunksize
-	
-	numb=0;        
-	for chunk in table:
-		numb+=1
+
+        numb=0;
+        for chunk in table:
+                numb+=1
                 #a cada chunk filtro por todos los USERs por el hash del string (el hash es un int) y despue filtro modulo passes
                 #y trabajo sobre la tabla subgroup nada mas que ahora tiene menos usuarios
-                subgroup = subgroup.append(chunk[chunk['USER'].apply(lambda x: hash(x) % passes == group )])
-		print('read chunk num {it}, (table_size, elapsed time) = ({siz},{t})'\
-						.format(it=numb,siz=len(subgroup),t=(time.time()-start_time)))
-    #entonces la idea es que yo ahora solo voy a trabajar, dentro de esta tabla filtrada y para todos los meses juntos
+                
+		print("Working on chunk {n} of month {ms}, time elapsed is {t} ".format(ms=month,n=numb,t=(time.time()-start_time)))
+		subgroup = subgroup.append(chunk[chunk['USER'].apply(lambda x: hash(x) % passes == group )])
+    
+	#entonces la idea es que yo ahora solo voy a trabajar, dentro de esta tabla filtrada y para todos los meses juntos
     
     #paso de segundos a horas
     #notar que TIMESTAMP arranca en 0 segundos para domingo 01/01/2012 00:00am 
     #con lo cual domingo es el dia 0, lunes el 1, asi..
-    print('finished month reading')    
+    print('finished month reading')
     subgroup['Hour'] =  (subgroup['TIMESTAMP'].values*1.0/3600)%24
     subgroup['Day']  =  (subgroup['TIMESTAMP'].values*1.0/(3600*24))%7
-    
+
     #filtro usuarios con pocos o demasiados llamados en general menos de 5 mensuales y mas de 400  
     insignificant_users = subgroup['USER'].value_counts()[(subgroup['USER'].value_counts() < 5) \
                         | (subgroup['USER'].value_counts() > 400)].index.values.tolist()
     subgroup= subgroup.loc[~subgroup['USER'].isin(insignificant_users)]
-    
-    
-    #filtro segun nightfilter y week_end
+
+
+    #filtro segun nightfilter y week_end. el day light seria de [7,19) segun la convencion de mexico/GranData
     if night_filter == True:
-        subgroup = subgroup.loc[(subroup['Hour']<8) | (subgroup['Hour']>18)]
+        subgroup = subgroup.loc[(subroup['Hour']<7) | (subgroup['Hour']>19)]
     if week_end == True:
         subgroup = subgroup.loc[(subgroup['Day']==0) | (subgroup['Day']==6)]
 
-    
+
     #   
-        
+
     grouped = subgroup.groupby(['USER', 'ANTENNA_ID'])['ANTENNA_ID'].agg({'count': np.size})
     grouped.reset_index(inplace=True,drop=False)
-    
+
     del subgroup
     #reordeno dentro de c/ USER por el count del antenna, esto me sirve para despues ordenar las antenas por uso
     grouped.sort_values(by=['USER','count'],ascending=False,inplace=True)
-    
+
     ##enriquezco la muestra con datos epidemicos
     #primero agrego a cada antenna del df el dato de si es epidemica
     #despues agrupo por el USER y me fijo solo la columna epidemica en c/grupo
     #finalmente sumo en c/ grupo y tomo la parte superior 
-#entera de esa division con el largo del grupo. Si uso al menos una antena epidemica entonces esta expuesto(==1) Si no,
-# da 0 pues no estuvo expuesto.        
+    #entera de esa division con el largo del grupo. Si uso al menos una antena epidemica entonces esta expuesto(==1) Si no,
+    # da 0 pues no estuvo expuesto.        
     ##enriquezco la muestra con datos epidemicos
 
     exposed_info =grouped.join(antennas['EPIDEMIC'], on='ANTENNA_ID').\
     groupby('USER')['EPIDEMIC'].\
-        agg({'EXPOSED' : lambda x: int( np.ceil(np.sum(x)*1.0/np.size(x)) )}) 
-    
+        agg({'EXPOSED' : lambda x: int( np.ceil(np.sum(x)*1.0/np.size(x)) )})
+
     #actualizo la tabla
     grouped = grouped.join(exposed_info['EXPOSED'],on="USER")
     del exposed_info
-    
-    
+
+
     #creo la tabla filtrada solo por users, que es la que voy a terminar guardando (hay tantos rows como users)
     output_table = grouped.drop_duplicates(subset = 'USER', keep='first')
     #re indexo
     output_table.index = output_table['USER'].values
-    
+
     #agrupo ahora la tabla por USER para hacer todos los calculos en los grupos
-    
-    grouped = grouped.groupby('USER')  
-    
+
+    grouped = grouped.groupby('USER')
+
     #aca voy a ir agregando las top 10 antennas utilizadas por el user, Si no llego a 10 antennas, relleno con NaNs
-    for i in range(0,10):
+    for i in range(10):
         #me quedo con la i-esima fila de c/grupo (si no hay fila, no toma en cuenta ese USER)
-        
+
         buffer_table = grouped.nth(i)[['ANTENNA_ID','count']]
         #renombre a iesima ANTENNA_ID e iesimo count
         buffer_table.columns=['ANTENNA_ID_%i'%i,'count_%i'%i]
         #agrego esta info como nuevas columnas, dejando lo demas como NaNs
         output_table = pd.concat([output_table, buffer_table], axis=1, join_axes=[output_table.index])
-    
+
     del grouped
     #los primeros ANTENNA_IDs ya no me sirven, idem con el primer
     output_table.drop('ANTENNA_ID', axis=1, inplace=True)
     output_table.drop('count', axis=1, inplace=True)
-    
+    #dropeo la columna USER que ya es redundante por el indice
+    output_table.index.name = "USER"
+    output_table.drop('USER', axis=1, inplace=True)
+
     #para los datos faltantes dentro del Top10, relleno con -1s, que vendrian a ser los NaNs
     output_table.fillna(-1,inplace=True)
-    
-    #ojo aca que en el caso que entren hashes entonces no los va a poder convertir
-    #ignoro la primer columna con el hash y convierto el resto a int
-    #output_table[output_table.columns[1:]] = output_table[output_table.columns[1:]].astype(int,copy=False)
-    
+
+    #como elimine la columan de hashes puedo convertir todo a int
+    output_table = output_table.astype(int,copy=False)
+
     #agrego info de EPIDEMIC, asumiendo a alguien como epidemico si al antenna donde vive (la ANTENNA_ID_0) 
     #esta catalogada como EPIDEMIC
-    test_table =test_table.join(antennas['EPIDEMIC'], on='ANTENNA_ID_0')
-    
-    
-    #print(output_table.columns)
-    #print("la tabla es:\n") 
-    #print(output_table.head(5))
-    #print("\n")
-    
-    #print(output_table.dytpes)
-    #pd.to_numeric(output_table['EXPOSED'])
-    
-    #for i in range(3,22):
-    #    pd.to_numeric(output_table[output_table.columns[i]]) 
-    #print(output_table.dytpes)
-    
-    
-    
-    
+
+    output_table = output_table.join(antennas['EPIDEMIC'], on='ANTENNA_ID_0')
+
     #aca termino guardando (en forma de append) el output final pero solo para esos usuarios % pass ==group
-    output_table.to_csv(output_file, index = False, 
+
+    #el primer write (first group==0) va con header
+    if group ==0 :
+        output_table.to_csv(output_file, index = True,
+                   header = True, mode='a')
+    else: 
+        output_table.to_csv(output_file, index = True,
                    header = False, mode='a')
+
+    
 then = start_time
 seconds = time.time() - then
 print("total running time of script is %d " % seconds)
+
 
 
