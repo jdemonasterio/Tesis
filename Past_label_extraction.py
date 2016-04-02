@@ -85,13 +85,16 @@ for group in range(passes):
     #itero sobre los meses
     subgroup = pd.DataFrame()
     for month in months:
-        input_file= rootdir +"simple_format_{ms}.txt.gz"\
-            .format(y=year,ms=month)
+	if (month == '201404'):
+            continue
+
+        input_file= rootdir +"simple_format_{m}.txt.gz"\
+		.format(m=month)
 
         table = pd.read_csv(
                 input_file,
                 engine = 'c',
-                chunksize = 8*10**7,
+                chunksize = 18*10**7,
     #            iterator =True,
                 sep = ' ',
                 header = 0,
@@ -176,5 +179,5 @@ for group in range(passes):
 
     print("Finished group {gr} of {ps}, time elapsed is {t}\n ".format(gr=group,ps=passes,t=(time.time()-start_time)))
 
-print("total running time of script is %d " % time.time() - start_time)
+print("total running time of script is %s " % (time.time() - start_time))
 
