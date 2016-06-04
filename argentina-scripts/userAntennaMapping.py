@@ -21,13 +21,13 @@ def get_input_file(month,day):
     return rootdir +"{y}/{m}/binaria_gsm_{y}{m:0=2d}{d:0=2d}.csv.gz"\
                 .format(y=2012,m=month,d=day)
 
-def get_output_file(month,sample=False,group = -1):
-    output = "/home/juan/mobility-study/argentina-scripts/output/{0}/user_antenna_mapping_gr{1}_1".format(month,group)
+def get_output_file(month,group = -1,sample=False):
+    output = "/home/juan/mobility-study/argentina-scripts/output/{0}/{1}/user_antenna_mapping".format(year,month)
     if sample == True:
-        output = output + "_sample"
+        output = output + "_sample1"
     if group != -1:
-        output = output + "_group{g}".format(g=group)
-    return output + ".csv"
+        output = output + "_group{g}_1".format(g=group)
+    return output 
 
 def get_columns_from_dict(user_dict):
     antenna_count_list = [-1]*10
@@ -75,7 +75,7 @@ if month ==2:
 print("Transform all raw datasets to Sframe dirs, time elapsed is {t} ".format(t=(time.time()-start_time)))
 for day in days:
     
-    sframe_dir = '/home/juan/mobility-study/argentina-scripts/sframe_cdrs/{y}{m:0=2d}{d:0=2d}'.format(y=year,m=month,d=day)
+    sframe_dir = '/home/juan/mobility-study/argentina-scripts/sframe_cdrs/{y}/{m:0=2d}/{d:0=2d}'.format(y=year,m=month,d=day)
     
     if not(os.path.exists(sframe_dir)):
         print("Reading disk file for day {d}-{ms}, time elapsed is {t} ".format(ms=month,d=day,t=(time.time()-start_time)))
@@ -101,14 +101,20 @@ print("Start processing data from Sframe dirs, time elapsed is {t} ".format(ms=m
 #aca seteamos como vamos a partir la tabla segun el nro correspondiente a c/hash y tomando modulo
 passes = 20 
 #creo los grupos que despues van a filtrar c/chunk de la tabla para hacer varias pasadas
-for group in range(passes):
+for group in range(0,passes):
+    #voy a salvar c/file por separado y despues los appendeo todos en 1.
+    output_file = get_output_file(month,group=group)
+    
+    if (os.path.exists(output_file)):
+        continue
+    
     print("working group number {it} of {pas}, time elapsed is {t} \n".format(it=group,pas=passes, t=(time.time()-start_time)))
 
     #itero sobre los meses
     table =  gl.SFrame()
     for day in days:
        
-        sframe_dir = '/home/juan/mobility-study/argentina-scripts/sframe_cdrs/{y}{m:0=2d}{d:0=2d}'.format(y=year,m=month,d=day)        
+        sframe_dir = '/home/juan/mobility-study/argentina-scripts/sframe_cdrs/{y}/{m:0=2d}/{d:0=2d}'.format(y=year,m=month,d=day)        
         daily_table = gl.load_sframe(sframe_dir)
         #obs. NO levanto la columna Fecha pues esta info la puedo sacar del filename
         current_date = datetime.datetime(2012,month,day)
@@ -116,7 +122,9 @@ for group in range(passes):
         #a cada tabla diaria filtro por todos los USERs por el hash del string (el hash es un int) y despue filtro modulo passes
         #y trabajo sobre la tabla subgroup nada mas que ahora tiene menos usuarios
         table = table.append(daily_table[daily_table['USER'].apply(lambda x: hash(x) % passes == group )])
-
+    
+    del daily_table
+    
     #entonces la idea es que yo ahora solo voy a trabajar, dentro de esta tabla filtrada y para todos los dias del mes juntos
     print('finished day reading for group {g} of {p}, time elapsed is {t} '.format(g = group,
                                                                         p = passes, t=(time.time()-start_time)))
@@ -159,7 +167,7 @@ for group in range(passes):
     table = table.remove_column('ANTENNA_COUNT_DICT')
 
     table_no_work_friday = table_no_work_friday.groupby(['USER','CLIENT_CELL_ID'],
-                 {'ANTENNA_COUNT_NO_WORK':gl.aggregate.COUNT()})
+                 {'ANTENNA_COUNT_NO_WORK_FRIDAY':gl.aggregate.COUNT()})
 
     table_no_work_friday = table_no_work_friday.groupby(['USER'],
                      {'ANTENNA_COUNT_DICT_NO_WORK_FRIDAY':gl.aggregate.CONCAT("CLIENT_CELL_ID","ANTENNA_COUNT_NO_WORK_FRIDAY")})
@@ -180,16 +188,22 @@ for group in range(passes):
     
     
     #juntamos las dos tablas procesadas
-    table = table.join(table_no_work_friday,on = 'USER')
-
-    print('finished data processing from group {g} of {p}, time elapsed is {t}\n Start saving csv '.format(g = group,
+    table = table.join(table_no_work_friday,on = 'USER',how = 'left')
+    
+    del table_no_work_friday
+    
+    #relleno todos los NANs que van a aparecer
+    for col in [col for col in table.column_names() if not("NO_WORK" in col) and ("ANTENNA" in col or "COUNT" in col )]:
+        if "ANTENNA" in col:
+            table = table.fillna(col,value="-1")
+        if "COUNT" in col:
+            table = table.fillna(col,value=-1)
+    print('finished data processing from group {g} of {p}, time elapsed is {t}\n Start saving output files '.format(g = group,
                                                                         p = passes, t=(time.time()-start_time)))
+        
+    table.save(output_file)
     
-    #salvo c/file por separado y despues los appendeo todos en 1.
-    output_file = get_output_file(month,group)
-    
-    table.save(output_file,
-                   header = True, delimiter = '|')
+    del table
 
     #comprimo a mano el archivo pues SFrame no comprime en gzip automaticamente los csvs
     #bashCommand = "gzip {0}".format(output_file)
