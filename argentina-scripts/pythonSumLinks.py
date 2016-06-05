@@ -115,7 +115,7 @@ for group in range(0,passes):
         table = table.fillna(col,0)
     
     local_time = time.localtime()       
-    print('finished data processing from group {g} of {p}, time elapsed is {t}\n Start saving output files , localtime is {ho}:{mi} \n'.format(g = group, p = passes, t=(time.time()-start_time),ho=local_time.tm_hour,mi=localt.tm_min))
+    print('finished data processing from group {g} of {p}, time elapsed is {t}\n Start saving output files , localtime is {ho}:{mi} \n'.format(g = group, p = passes, t=(time.time()-start_time),ho=local_time.tm_hour,mi=local_time.tm_min))
     #salvo c/file por separado y despues los appendeo todos en 1.
     output_file = get_output_file(month,group)
     print('output_file is located at %s' % output_file)
