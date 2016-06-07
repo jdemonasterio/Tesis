@@ -34,7 +34,8 @@ for group in range(0,passes):
     output_file = get_output_file(month,group)
     #agrego este control para cuando tuve que cortar antes el algo por alguna razon
     if (os.path.exists(output_file)):
-        print('skipping group {gr} since output-dir exists: {di}'.format(gr = group, di =output_file))
+        print('skipping group {gr} since output-dir exists: {di}'.format(gr = group, di =output_file)) 
+	continue
     
     #itero sobre los meses
     table =  gl.SFrame()
