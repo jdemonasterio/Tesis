@@ -23,7 +23,7 @@ def get_input_file(month,day):
 
 #levanto la fila de antennas que vamos a droppear
 dropped_file = "/home/juan/mobility-study/argentina-scripts/data/celdas_dropped.csv"
-dropped_antennas = pd.read_csv(dropped_file)
+dropped_antennas = pd.read_csv(dropped_file,header=None)
 dropped_antennas = dropped_antennas.values.flatten()
     
 #ver el tiempo que tarda

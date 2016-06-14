@@ -137,22 +137,26 @@ for group in range(0,passes):
     
     #limpio la antenna hash, sacandome el ultimo caracter pues este no identifica la antenna sino que modifica el tipo de
     #llamado utilizado en esa call solamente
-    table['CLIENT_CELL_ID'] = table['CLIENT_CELL_ID'].apply(lambda x: x[:-1])
+    #dropeo todas las celdas 
+    table =  table[table['CLIENT_CELL_ID'].apply(lambda x: len(x)>=5)]
+    table['CLIENT_CELL_ID'] = table['CLIENT_CELL_ID'].apply(lambda x: x[:-1] if len(x) ==6 )
     
     table.remove_columns(['DATE','TIME'])
     
     ## leo si las llamadas fueron hechas durante el findesemana + viernes
     table['DURING_WEEKEND_FRIDAY'] = table['TIMESTAMP'].apply(lambda x: x.weekday()==5 or x.weekday()==6 or x.weekday()==4)
 
-    # asigno el bool si la llamada fue en horario 'laboral'
+    # asigno el bool si la llamada fue en horario 'laboral' o DIURNO (cuando hay sol)
     #notar que la hora < 20 significa que 19hs y 59 min da True
-    table['DURING_WORK']= table['TIMESTAMP'].apply(lambda x: x.hour>=8 and x.hour<20 )
-
+    table['DURING_WORK']= table['TIMESTAMP'].apply(lambda x: x.hour>=5 and x.hour<20 )
+    
+    
     table_no_work_friday = table[table['DURING_WEEKEND_FRIDAY']==True or table['DURING_WORK']==False ].copy()
     
     
     table = table.groupby(['USER','CLIENT_CELL_ID'],
                  {'ANTENNA_COUNT':gl.aggregate.COUNT()})
+    
     table = table.groupby(['USER'],
                      {'ANTENNA_COUNT_DICT':gl.aggregate.CONCAT("CLIENT_CELL_ID","ANTENNA_COUNT")})
 
