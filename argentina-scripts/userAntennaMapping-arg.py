@@ -1,4 +1,6 @@
-import numpy as np; import os;import random;
+import numpy as np; 
+import os;
+import random;
 import graphlab as gl
 
 #esto es para dibujar directo a la notebook
@@ -11,17 +13,12 @@ import os
 import datetime
 import sys
 import subprocess
-#para loggear outputs que estoy imprimiendo
 import logging
 
 
 #seteamos el lugar de trabajo
 rootdir="/home/juan/mobility-study/argentina-scripts"
 os.chdir(rootdir)
-
-def get_input_file(year,month,day):
-    return rootdir +"{y}/{m}/binaria_gsm_{y}{m:0=2d}{d:0=2d}.csv.gz"\
-                .format(y=year,m=month,d=day)
 
 def get_output_file(group = -1,sample=False):
     output = "/home/juan/mobility-study/argentina-scripts/output/homeantenna_sframe"
@@ -59,10 +56,11 @@ def get_columns_from_dict(user_dict):
     return rv
 
 def printUsage():
-    print "Usage:"
-    print "python userAntennaMapping.py [mode]"
-    print "mode = 'true' to test out the algorithm on a sample of upto 7 days for a (random) particular month"
-    print "mode = 'false' to run it for all days/months"
+    print("Usage:")
+    print("python userAntennaMapping-arg.py [mode]")
+    print("python SumLinks-arg.py [mode] [month]")
+    print("mode = 'true' to test out the algorithm on a sample of upto 7 days for a (random) particular month")
+    print("mode = 'false' to run it for all available months")
 
 def main(argc, argv):
     #notar aca que python toma 2 parametros, el script propiamente y el parametro que entra al script
@@ -77,7 +75,6 @@ def main(argc, argv):
         sys.exit()
         
     start_time = time.time()
-
 
     #generamos el diccionario que setea los parametros sobre el cual vamos a iterar
     year = 2011
@@ -296,7 +293,6 @@ def main(argc, argv):
         del table
         
         print_str = "Finished saving group {gr} of {p}, time elapsed is {t}\n ".format(gr=group,p=passes,t=(time.time()-start_time)) 
-        
         print(print_str)
         logging.info( print_str )
         
@@ -311,9 +307,9 @@ if __name__=='__main__':
     log_date = time.localtime()
     log_date = "{day:0=2d}".format(day = log_date.tm_mday) + "_" + "{mon:0=2d}".format(mon = log_date.tm_mon)
     
-    log_dir = '/home/juan/mobility-study/argentina-scripts/logs/{log}/'.format(log = log_date)
+    log_dir = '/home/juan/mobility-study/argentina-scripts/logs/{log}'.format(log = log_date)
     
-    log_file = log_dir + "log.txt"
+    log_file = log_dir + "/log.txt"
     
     if not(os.path.exists(log_dir)):
                 print("Creating the log dir" ) 
