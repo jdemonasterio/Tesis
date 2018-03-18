@@ -1,0 +1,64 @@
+[0] Config.pm:340> INFO - This is Biber 2.4
+[0] Config.pm:343> INFO - Logfile is 'main.blg'
+[30] biber:287> INFO - === sáb mar 17, 2018, 22:07:55
+[108] Biber.pm:348> INFO - Reading 'main.bcf'
+[224] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[224] Biber.pm:742> INFO - Found 0 citekeys in bib section 1
+[224] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[225] Biber.pm:742> INFO - Found 0 citekeys in bib section 2
+[225] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[225] Biber.pm:742> INFO - Found 32 citekeys in bib section 3
+[225] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[225] Biber.pm:742> INFO - Found 4 citekeys in bib section 4
+[226] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[226] Biber.pm:742> INFO - Found 5 citekeys in bib section 5
+[226] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[226] Biber.pm:742> INFO - Found 3 citekeys in bib section 6
+[226] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[226] Biber.pm:742> INFO - Found 10 citekeys in bib section 7
+[226] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[226] Biber.pm:742> INFO - Found 0 citekeys in bib section 8
+[226] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[226] Biber.pm:742> INFO - Found 0 citekeys in bib section 9
+[226] Biber.pm:742> INFO - Found 0 citekeys in bib section 0
+[231] Biber.pm:3151> INFO - Processing section 3
+[254] Biber.pm:3308> INFO - Looking for bibtex format file 'biblio.bib' for section 3
+[352] bibtex.pm:1113> INFO - Decoding LaTeX character macros into UTF-8
+[433] bibtex.pm:974> INFO - Found BibTeX data source 'biblio.bib'
+[651] Utils.pm:147> WARN - BibTeX subsystem: /tmp/jrLzPh2j2D/biblio.bib_20478.utf8, line 11, warning: 1 characters of junk seen at toplevel
+[651] Utils.pm:147> WARN - BibTeX subsystem: /tmp/jrLzPh2j2D/biblio.bib_20478.utf8, line 24, warning: 1 characters of junk seen at toplevel
+[651] Utils.pm:147> WARN - BibTeX subsystem: /tmp/jrLzPh2j2D/biblio.bib_20478.utf8, line 557, warning: 1 characters of junk seen at toplevel
+[651] Utils.pm:147> WARN - BibTeX subsystem: /tmp/jrLzPh2j2D/biblio.bib_20478.utf8, line 632, warning: 1 characters of junk seen at toplevel
+[1009] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1009] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1009] Biber.pm:3028> INFO - Sorting list 'nyt/global' of type 'entry' with scheme 'nyt' and locale 'us_EN'
+[1009] Biber.pm:3032> INFO - No sort tailoring available for locale 'us_EN'
+[1077] Biber.pm:3151> INFO - Processing section 4
+[1077] Biber.pm:3308> INFO - Looking for bibtex format file 'biblio.bib' for section 4
+[1172] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1173] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1173] Biber.pm:3028> INFO - Sorting list 'nyt/global' of type 'entry' with scheme 'nyt' and locale 'us_EN'
+[1173] Biber.pm:3032> INFO - No sort tailoring available for locale 'us_EN'
+[1179] Biber.pm:3151> INFO - Processing section 5
+[1179] Biber.pm:3308> INFO - Looking for bibtex format file 'biblio.bib' for section 5
+[1279] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1280] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1280] Biber.pm:3028> INFO - Sorting list 'nyt/global' of type 'entry' with scheme 'nyt' and locale 'us_EN'
+[1280] Biber.pm:3032> INFO - No sort tailoring available for locale 'us_EN'
+[1287] Biber.pm:3151> INFO - Processing section 6
+[1287] Biber.pm:3308> INFO - Looking for bibtex format file 'biblio.bib' for section 6
+[1335] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1335] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1335] Biber.pm:3028> INFO - Sorting list 'nyt/global' of type 'entry' with scheme 'nyt' and locale 'us_EN'
+[1335] Biber.pm:3032> INFO - No sort tailoring available for locale 'us_EN'
+[1338] Biber.pm:3151> INFO - Processing section 7
+[1338] Biber.pm:3308> INFO - Looking for bibtex format file 'biblio.bib' for section 7
+[1404] Utils.pm:147> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
+[1404] Utils.pm:147> WARN - BibTeX subsystem: author, warning: comma(s) at end of name (removing)
+[1515] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1515] UCollate.pm:65> INFO - Overriding locale 'us_EN' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1516] Biber.pm:3028> INFO - Sorting list 'nyt/global' of type 'entry' with scheme 'nyt' and locale 'us_EN'
+[1516] Biber.pm:3032> INFO - No sort tailoring available for locale 'us_EN'
+[1529] bbl.pm:519> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[1722] bbl.pm:615> INFO - Output to main.bbl
+[1723] Biber.pm:109> INFO - WARNINGS: 6
