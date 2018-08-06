@@ -11,6 +11,8 @@
 % opcion con menos paginas en blanco
 \documentclass[a4paper,11pt,leqno,openany]{book}
 
+\usepackage[figure,table]{totalcount}
+
 \input{preamble_packages.tex}
 \input{preamble_definitions.tex}
 \input{preamble_title.tex}
@@ -28,7 +30,7 @@
   \include{abstract}
 
   \tableofcontents
-
+  
 \mainmatter
   \include{ch_introduction}
   \include{ch_descriptions_risk}
@@ -38,14 +40,13 @@
   \include{ch_results}
   \include{ch_conclusions}
 
-
 \bibliography{biblio}{}
 
-% \appendix
-% \part*{Appendices}
 \begin{appendices}
 \include{appendix}
 \end{appendices}
-  % \printindex
+
+There are \totalfigures\ figures and \totaltables\ tables in this document.
+  
 \end{document}
 
