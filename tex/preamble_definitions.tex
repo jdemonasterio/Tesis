@@ -1,0 +1,132 @@
+
+
+%------------------------------------+
+% Definition of theorem environments |
+%------------------------------------+
+% Declare theorem styles that remove final dot and use bold font for notes
+\newtheoremstyle{plaindotless}{\topsep}{\topsep}{\itshape}{0pt}{\bfseries}{}%
+{5pt plus 1pt minus 1pt}{\thmname{#1}\thmnumber{ #2}\bfseries{\thmnote{ (#3)}}}
+\newtheoremstyle{definitiondotless}{\topsep}{\topsep}{\normalfont}{0pt}%
+{\bfseries}{}{5pt plus 1pt minus 1pt}%
+{\thmname{#1}\thmnumber{ #2}\bfseries{\thmnote{ (#3)}}}
+\newtheoremstyle{remarkdotless}{0.5\topsep}{0.5\topsep}{\normalfont}{0pt}%
+{\itshape}{}{5pt plus 1pt minus 1pt}%
+{\thmname{#1}\normalfont\thmnumber{ #2}\itshape{\thmnote{ (#3)}}}
+%
+%% Define style dependent environments and number them consecutively per section
+\theoremstyle{plaindotless}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{theorem*}{Theorem.}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem*{proposition*}{Proposition.}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{lemma*}{Lemma.}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{corollary*}{Corollary.}
+
+\theoremstyle{definitiondotless}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{definition*}{Definition.}
+\newtheorem{examplex}[theorem]{Example}
+\newtheorem*{examplestarred}{Example.}
+\newtheorem*{continuedex}{Example \continuedexref\space Continued.}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem*{exercise*}{Exercise.}
+\newtheorem*{solution*}{Solution.}
+\newtheorem{problem}{Problem}
+
+\theoremstyle{remarkdotless}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{remark*}{Remark.}
+\newtheorem*{notation*}{Notation.}
+
+% Define numbered, unnumbered and continued examples with triangle end mark
+\newcommand{\myqedsymbol}{\ensuremath{\triangle}}
+
+\newenvironment{example}
+  {\pushQED{\qed} \renewcommand{\qedsymbol}{\myqedsymbol}\examplex}
+  {\popQED\endexamplex}
+
+\newenvironment{example*}
+  {\pushQED{\qed}\renewcommand{\qedsymbol}{\myqedsymbol}\examplestarred}
+  {\popQED\endexamplestarred}
+
+\newenvironment{examcont}[1]
+  {\pushQED{\qed}\renewcommand{\qedsymbol}{\myqedsymbol}%
+    \newcommand{\continuedexref}{\ref*{#1}}\continuedex}
+  {\popQED\endcontinuedex}
+
+
+%-----------------------------------------------+
+% Cross-references settings (cleveref settings) |
+%-----------------------------------------------+
+
+\crefname{exercise}{Exercise}{Exercises}
+\crefname{enumerate}{Enumeration}{Enumerations}
+\crefname{stepsi}{Step}{Steps}
+\crefname{problem}{Problem}{Problems}
+\crefname{appsec}{Appendix}{Appendices}
+
+% Uncommenting this brings problems when referrencing equations.
+%\crefname{equation}{}{}
+%\crefformat{equation}{#2(#1)#3}
+%\crefrangeformat{equation}{#3(#1)#4 to #5(#2)#6}
+%\crefmultiformat{equation}{#2(#1)#3}{ and #2(#1)#3}{, #2(#1)#3}{ and #2(#1)#3}
+%\crefrangemultiformat{equation}{#3(#1)#4 to #5(#2)#6}{ and #3(#1)#4 to #5(#2)#6}%
+%{, #3(#1)#4 to #5(#2)#6}{ and #3(#1)#4 to #5(#2)#6}
+
+
+%-----------------------------------------------+
+% Citation settings (natbib settings)           |
+%-----------------------------------------------+
+%\usepackage[sort, numbers]{natbib}
+% Set citation style
+%\setcitestyle{square}
+
+%-------------------+
+% Table of contents |
+%-------------------+
+% Add bookmark for table of contents and increase spacing of items
+% \preto{\tableofcontents}{\cleardoublepage\pdfbookmark[0]{\contentsname}{toc}%  \setstretch{1.1}}
+\preto{\tableofcontents}{\clearpage\pdfbookmark[0]{\contentsname}{toc}%
+  \setstretch{1.1}}
+\appto{\tableofcontents}{\singlespacing}
+
+%---------------------------------------------------+
+% (Re)Definition of new commands and math operators |
+%---------------------------------------------------+
+% Numbers
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+% Probability
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Expect}{\mathbb{E}}
+\DeclareMathOperator{\Var}{\mathrm{Var}}
+\DeclareMathOperator{\Cov}{\mathrm{Cov}}
+% Delimiters
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lvert\lvert}{\rvert\rvert}
+% Miscellaneous
+\renewcommand{\d}{\ensuremath{\operatorname{d}\!}}  % Differential
+\renewcommand{\L}{\ensuremath{\operatorname{\mathcal{L}}}}  % Lagrangian
+\DeclareMathOperator{\calN}{\mathcal{N}}
+\DeclareMathOperator{\calG}{\mathcal{G}}
+\DeclareMathOperator{\calL}{\mathcal{L}}
+\DeclareMathOperator{\calE}{\mathcal{E}}
+% argmin and max operators
+\DeclareMathOperator*{\argmin}{argmin} % no space, limits underneath in displays
+% \DeclareMathOperator{\argmin}{argmin} % no space, limits on side in displays
+\DeclareMathOperator*{\argmax}{argmax} % no space, limits underneath in displays
+% \DeclareMathOperator{\argmax}{argmax} % no space, limits on side in displays
+
+
+
+\newcommand\MyBox[2]{
+	\fbox{\lower0.75cm
+		\vbox to 1.7cm{\vfil
+			\hbox to 1.7cm{\hfil\parbox{1.4cm}{#1\\#2}\hfil}
+			\vfil}%
+	}%
+}

@@ -258,7 +258,7 @@ If we let the tree grow deeper though, we might increase the performance of the 
 But again, this won't help our generalization error.
 So to tackle most of the disadvantages described by this technique, \textit{Random Forests} are what follow as a natural extension to this classifier.
 
-\section{ Random Forests}\label{section:random_forests}
+\section{Random Forests}\label{section:random_forests}
 
 Random Forests are estimators that extend from constructing a group of single decision trees and then combining them to produce a single output decision.
 This grouping of classifiers is known as an \textit{ensemble}.
@@ -269,7 +269,7 @@ The idea behind this is to have every individual model train on a random subset 
 With this we preserve single estimator's interdependence as much as possible.
 There are other different techniques that intent to construct uncorrelated trees which are combined at the output, yet the main idea is common to all.
 
-\subsection{ Random Forests Formulation}\label{subsection:random_forests_formulation}
+\subsection{Random Forests Formulation}\label{subsection:random_forests_formulation}
 
 Let $K$ be the number of trees in the ensemble and let $\Theta_k$ encode the parameters for the $k$-th tree.
 As we have mentioned before, there are various variants to the model and these variants will define the type of encoding for the $\Theta_k, k \in {1,\ldots,K}$  parameters.
@@ -310,7 +310,7 @@ almost surely for all sequences of parameters $\Theta_1,\Theta_2, \ldots, \Theta
 This proof can be found in \cref{appx:sec:rforest_margin_function_convergence}.
 
 
-\subsection{ Experimental comparison to Decision Trees}\label{subsection:random_forests_comparison_trees}
+\subsection{Experimental comparison to Decision Trees}\label{subsection:random_forests_comparison_trees}
 
 From what is formulated in \cref{subsection:random_forests_formulation} and in order to compare how this model improves over the Decision Tree model, we ran two experiment setups on a Random Forest learner for the difficult  \cref{target2}.
 We selected the $Accuracy$ score to measure the learner's performance.
@@ -797,7 +797,7 @@ In practice, this results in longer iterations needed to reach the algorithm's \
 However, when this factor is combined with sub sampling, experiments have shown improvements in the overall generalization accuracy.
 
 
-\subsection{ Experimental comparison to Random Forests}\label{subsection:boosting_comparison_forest}
+\subsection{Experimental comparison to Random Forests}\label{subsection:boosting_comparison_forest}
 
 In order to compare this learner to Random Forests, we ran the same setup as in \cref{subsection:random_forests_comparison_trees}
 with two experiments each varying a different hyperparameter.

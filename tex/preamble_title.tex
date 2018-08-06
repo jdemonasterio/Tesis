@@ -1,0 +1,82 @@
+%----------------------------------------------+
+% Half-title, titlepage and copyright settings |
+%----------------------------------------------+
+
+%\newcommand*{\halftitlepg}{%
+%  \begingroup
+%    \begin{center}
+%      \textbf{\huge{Math Thesis}}
+%    \end{center}
+%  \endgroup
+%  \thispagestyle{empty}\cleardoublepage
+%}
+
+\newcommand*{\titlepg}{%
+  \begingroup
+    \begin{center}
+        \begin{figure}[!htbp]
+          \includegraphics[scale=0.45]{figures/uba_logo/250px-UBA.png}
+        \end{figure}
+      \medskip
+      \textbf{\LARGE{Universidad de Buenos Aires}}\\
+      \smallskip
+      \textbf{\Large{Facultad de Ciencias Exactas y Naturales}}\\
+      \smallskip
+      \textbf{\Large{Departamento de Matemática}}\\
+      \vspace{0.075\textheight}
+      %
+      \rule{\textwidth}{1.5pt}\par
+      \vspace{\baselineskip}
+      {\bfseries\huge{Exploring Migrations and Spread of Chagas Disease in Latin America with Machine Learning}\par
+      \bigskip\Large{Explorando Migraciones y Difusión del Mal de Chagas en América
+          Latina con Aprendizaje Automático}}\\
+      \vspace{\baselineskip}
+      \rule{\textwidth}{1.5pt}
+      \bigskip
+
+      \textsc{\Large{Juan Mateo De Monasterio}}\par
+
+      \vspace{1.2cm}
+      \begin{flushleft}
+        \textbf{Director:} \textsc{Carlos Sarraute}\par
+        \textbf{Co-director:} \textsc{Alejo Salles}\par
+        \textbf{Jurados:} \textsc{Matthieu Jonckheere, Pablo Groisman}\par
+      \end{flushleft}
+      \bigskip
+      \begin{flushright}
+      \textbf{Diciembre 2017}
+      \end{flushright}
+    \end{center}
+  \thispagestyle{empty}\clearpage
+  \endgroup
+}
+
+\newcommand*{\copyrightpg}{%
+  \begingroup
+    \footnotesize
+    \parindent 0pt
+    \null
+    \vfill
+    \textcopyright{} 2017 Juan Mateo De Monasterio. All rights reserved.\par
+    \vspace{\baselineskip}
+    This document is free; you can redistribute it and/or modify it under the
+    terms of the GNU General Public License as published by the Free Software
+    Foundation; either version 2 of the License, or (at your choice) any later
+    version.\par
+    \vspace{\baselineskip}
+    This document was typeset in Latin Modern font using \LaTeX.\par
+  \endgroup
+  \thispagestyle{empty}\clearpage
+}
+
+\newcommand*{\dedication}{%
+  \begingroup
+    \vspace*{0.3\textheight}
+    \begin{center}
+      \emph{\large{To all.}}
+      \end{center}
+    \endgroup
+%  \thispagestyle{empty}\cleardoublepage
+  \thispagestyle{empty}\clearpage
+}
+

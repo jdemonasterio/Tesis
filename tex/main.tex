@@ -1,7 +1,4 @@
-% !TeX document-id = {e1f4adcd-6604-437a-bbae-28a23f2aa94f}
-% !BIB TS-program = biber
-% !BIB program = biber
-\pdfoutput=1
+
 %===============================================================================
 %          File: main.tex
 %        Author: Juan de Monasterio
@@ -14,23 +11,26 @@
 % opcion con menos paginas en blanco
 \documentclass[a4paper,11pt,leqno,openany]{book}
 
-\input{preamble.tex}
+\usepackage[figure,table]{totalcount}
 
-% \includeonly{}
+\input{preamble_packages.tex}
+\input{preamble_definitions.tex}
+\input{preamble_title.tex}
+
 
 \begin{document}
 
 \frontmatter
-% not necessary
-%  \halftitlepg
+
   \titlepg
   \copyrightpg
   \ifdef{\dedication}{\dedication}{}
+
   \include{preface}
   \include{abstract}
 
   \tableofcontents
-
+  
 \mainmatter
   \include{ch_introduction}
   \include{ch_descriptions_risk}
@@ -40,18 +40,13 @@
   \include{ch_results}
   \include{ch_conclusions}
 
-{
-\backmatter
-\printbibheading[heading=bibbook]
-%tm
-\bibbysection[heading=subbib]
-}
+\bibliography{biblio}{}
 
-% \appendix
-% \part*{Appendices}
 \begin{appendices}
 \include{appendix}
 \end{appendices}
-  % \printindex
+
+There are \totalfigures\ figures and \totaltables\ tables in this document.
+  
 \end{document}
 
